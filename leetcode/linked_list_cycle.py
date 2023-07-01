@@ -27,6 +27,17 @@ class Solution:
             fast = fast.next.next  # Increment pointer by two
         
         return True
+    
+        '''
+        2. Dictionary approach
+        '''
+
+        # dictionary = {}
+        # while head:
+        #     if head in dictionary: return True
+        #     else: dictionary[head]= True
+        #     head = head.next
+        # return False
 
 def createLinkedList(values):
     head = ListNode(x=values[0])
