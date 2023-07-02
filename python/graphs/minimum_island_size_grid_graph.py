@@ -1,5 +1,5 @@
 
-def countIslands(matrix):
+def minimumIslandSize(matrix):
     
     '''
     T.C : O(rc)
@@ -9,7 +9,7 @@ def countIslands(matrix):
     c = # cols
     '''
     
-    count = 0
+    smallest = float('inf')
     visited = set()
     
     rows = len(matrix)
@@ -18,39 +18,43 @@ def countIslands(matrix):
     for row in range(rows):
         for col in range(cols):
             # increment count only for a new visited land
-            if explore(matrix, row, col, visited):
-                count += 1
+            size = exploreSize(matrix, row, col, visited)
+            if size > 0 and size < smallest:
+                smallest = size
     
-    return count
+    return smallest
 
-def explore(matrix, row, col, visited):  # DFS traversal
+def exploreSize(matrix, row, col, visited):  # DFS traversal
     
     # check for row bounds and col bounds
     rowInbounds = True if (0 <= row) and (row < len(matrix)) else False
     colInbounds = True if (0 <= col) and (col < len(matrix[0])) else False
-    if not rowInbounds or not colInbounds: return False, 0
+    if not rowInbounds or not colInbounds: return 0
     
     # skip Waters
-    if matrix[row][col] == 'W': return False
+    if matrix[row][col] == 'W': return 0
     
     # skip visited Lands
     pos = f'{row},{col}'
-    if pos in visited: return False
+    if pos in visited: return 0
     
     # add unvisited Land with its position
     visited.add(pos)
+    size = 1
     
-    # 4 options to traverse in 4 directions as similar to undirected graph
-    explore(matrix, row - 1, col, visited)
-    explore(matrix, row + 1, col, visited)
-    explore(matrix, row, col - 1, visited)
-    explore(matrix, row, col + 1, visited)
+    # 4 options to traverse in 4 directions as similar to undirected graph and collect sizes to add it to the overall island size
+    size += exploreSize(matrix, row - 1, col, visited)
+    size += exploreSize(matrix, row + 1, col, visited)
+    size += exploreSize(matrix, row, col - 1, visited)
+    size += exploreSize(matrix, row, col + 1, visited)
     
     # return after exploring a new Land
-    return True
+    return size
 
 # driver code
 if __name__ == "__main__":
+    
+    # Test Case-1
     
     matrix = [
         ['W', 'L', 'W', 'W', 'W'],
@@ -61,7 +65,5 @@ if __name__ == "__main__":
         ['L', 'L', 'W', 'W', 'W']
     ]
     
-    # Test Case-1
-    
-    count = countIslands(matrix)
-    print(f'There a {count} islands in the graph')
+    count = minimumIslandSize(matrix)
+    print(f'The size of the minimum island is: {count} in the grid graph / matrix')
