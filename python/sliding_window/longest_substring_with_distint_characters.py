@@ -32,7 +32,7 @@ def longest_sub_string_with_distint_characters(s):
         # calc the max length
         max_len = max(max_len, (right-left+1))
         right += 1
-        print(f'visited_set: {visited_set} left: {left} right: {right} max_len: {max_len}')
+        # print(f'visited_set: {visited_set} left: {left} right: {right} max_len: {max_len}')
     
     return max_len
     
